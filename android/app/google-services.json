@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "341575739942",
+    "firebase_url": "https://sikka-1ac17.firebaseio.com",
+    "project_id": "sikka-1ac17",
+    "storage_bucket": "sikka-1ac17.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:341575739942:android:3de3ad897ace8a53ce94e7",
+        "android_client_info": {
+          "package_name": "com.sikka.amitapps"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "341575739942-77edrqd9e6qefcdsmc9skad329qlmvps.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB7buJIfGxt1QUyUiZpx6o5o5ZanTAlGHU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "341575739942-77edrqd9e6qefcdsmc9skad329qlmvps.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
