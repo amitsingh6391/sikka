@@ -1,9 +1,15 @@
+
+
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:sikka/pages/home_page.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:sikka/view/helper/helperfunction.dart';
 import 'package:sikka/view/viewservices/auth.dart';
 import 'package:sikka/view/viewservices/database.dart';
+import 'package:sikka/pages/home.dart';
+import "dart:io";
 
 class SignIn extends StatefulWidget {
   final Function toggleView;
@@ -32,11 +38,11 @@ class _SignInState extends State<SignIn> {
 
       await authService
           .signInWithEmailAndPassword(
-              emailEditingController.text, passwordEditingController.text)
+          emailEditingController.text, passwordEditingController.text)
           .then((result) async {
         if (result != null) {
           QuerySnapshot userInfoSnapshot =
-              await DatabaseMethods().getUserInfo(emailEditingController.text);
+          await DatabaseMethods().getUserInfo(emailEditingController.text);
 
           HelperFunctions.saveUserLoggedInSharedPreference(true);
           HelperFunctions.saveUserNameSharedPreference(
@@ -45,7 +51,7 @@ class _SignInState extends State<SignIn> {
               userInfoSnapshot.documents[0].data["userEmail"]);
 
           Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (context) => HomePage()));
+              context, MaterialPageRoute(builder: (context) => Body()));
         } else {
           setState(() {
             isLoading = false;
@@ -58,83 +64,122 @@ class _SignInState extends State<SignIn> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomPadding: false,
-      appBar: AppBar(
-        title: Text(
-          "Sikka",
-        ),
-        centerTitle: true,
-        bottom: PreferredSize(
-          child: Text(
-            "Bet more Win more",
-            // style: GoogleFonts.fondamento(fontSize: 20,color: Colors.white),
-          ),
-          preferredSize: Size.fromHeight(50.0),
-        ),
-        /*flexibleSpace: Container(
-          decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: <Color>[
-                    Colors.green,
-                    Color(0xff2782bb)
-                  ])
-          ),
-        ),*/
-        backgroundColor: Color(0xff484d5c),
-      ),
-      backgroundColor: Colors.white,
+    return WillPopScope(
+
+      onWillPop: () {
+        return showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text("Confirm Exit"),
+                content: Text("Are you sure you want to exit?"),
+                actions: <Widget>[
+                  FlatButton(
+                    child: Text("YES"),
+                    onPressed: () {
+                      exit(0);
+                    },
+                  ),
+                  FlatButton(
+                    child: Text("NO"),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  )
+                ],
+              );
+            });
+      },
+
+
+
+      child:Scaffold(
+
+        floatingActionButton: FloatingActionButton(
+
+                  onPressed:(){
+
+                    exit(0);
+
+                  },
+                  child:Icon(Icons.cancel,color:Colors.red),
+                  backgroundColor:Colors.black
+
+
+                ),
+
+      backgroundColor:Colors.teal[100],
       body: isLoading
           ? Container(
-              child: Center(child: CircularProgressIndicator()),
-            )
+          color: Colors.white,
+        child: Center(child: Container(
+            child: CircularProgressIndicator())),
+      )
           : SingleChildScrollView(
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 24),
+        child: Center(
+          child: Column(
+            children: <Widget>[
+              SizedBox(height: 100,),
+              Container(
+                height: MediaQuery.of(context).size.height,
+                width: 300,
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border.all(color:Colors.black,width: 2),
+                  borderRadius: BorderRadius.all(Radius.circular(20.0))
+
+                ),
+                padding: EdgeInsets.symmetric(horizontal: 40),
                 child: Column(
                   children: [
 
-                    SizedBox(height:100),
-                   
-                    Form(
-                      key: formKey,
-                      child: Column(
-                        children: [
-                          Column(
-                            children: <Widget>[
-                              TextFormField(
-                                
-                                validator: (val) {
-                                  return RegExp(
-                                              r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                                          .hasMatch(val)
-                                      ? null
-                                      : "Please Enter Correct Email";
-                                },
-                                controller: emailEditingController,
-                               decoration: InputDecoration(hintText:"Email"),
+                    SizedBox(height:40),
+                    Text("Login",
+                    style: TextStyle(
+                      color: Colors.teal[300],
+                      fontSize: 30,
+                    ),),
+                    SizedBox(height:60),
 
-                          ),
-                          TextFormField(
-                            obscureText: true,
-                            validator: (val) {
-                              return val.length > 6
-                                  ? null
-                                  : "Enter Password 6+ characters";
-                            },
-                            controller: passwordEditingController,
-                            decoration: InputDecoration(hintText:"Password"),
-                          ),
-                        ],
-                      ),
-                    ])),
+                    Form(
+                        key: formKey,
+                        child: Column(
+                            children: [
+                              Column(
+                                children: <Widget>[
+                                  TextFormField(
+
+                                    validator: (val) {
+                                      return RegExp(
+                                          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                          .hasMatch(val)
+                                          ? null
+                                          : "Please Enter Correct Email";
+                                    },
+                                    controller: emailEditingController,
+                                    decoration: InputDecoration(hintText:"Email"),
+
+                                  ),
+                                  SizedBox(height: 20,),
+                                  TextFormField(
+                                    obscureText: true,
+                                    validator: (val) {
+                                      return val.length > 6
+                                          ? null
+                                          : "Enter Password 6+ characters";
+                                    },
+                                    controller: passwordEditingController,
+                                    decoration: InputDecoration(hintText:"Password"),
+                                  ),
+                                ],
+                              ),
+                            ])),
                     SizedBox(
-                      height: 16,
+                      height: 30,
                     ),
-                    
-                   
+
+
                     GestureDetector(
                       onTap: () {
                         signIn();
@@ -147,8 +192,8 @@ class _SignInState extends State<SignIn> {
                               colors: [
                                 // const Color(0xff007EF4),
                                 // const Color(0xff2A75BC)
-                                Colors.brown[200],
-                                Colors.yellow[300]
+                                Colors.teal[100],
+                                Colors.white
                               ],
                             )),
                         width: MediaQuery.of(context).size.width,
@@ -161,27 +206,16 @@ class _SignInState extends State<SignIn> {
                     SizedBox(
                       height: 16,
                     ),
-                    // Container(
-                    //   padding: EdgeInsets.symmetric(vertical: 16),
-                    //   decoration: BoxDecoration(
-                    //       borderRadius: BorderRadius.circular(30),
-                    //       color: Colors.white),
-                    //   width: MediaQuery.of(context).size.width,
-                    //   child: Text(
-                    //     "Sign In with Google",
-                    //     style: TextStyle(
-                    //         fontSize: 17, color: CustomTheme.textColor),
-                    //     textAlign: TextAlign.center,
-                    //   ),
-                    // ),
+                   
+                    
                     SizedBox(
                       height: 16,
                     ),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Text(
-                          "Don't have account? ",
+                          "Don't have account? ",style:TextStyle(fontSize:12)
                         ),
                         GestureDetector(
                           onTap: () {
@@ -191,19 +225,23 @@ class _SignInState extends State<SignIn> {
                             "Register now",
                             style: TextStyle(
                                 color: Colors.redAccent,
-                                fontSize: 20,
+                                fontSize: 17,
                                 decoration: TextDecoration.underline),
                           ),
                         ),
                       ],
                     ),
                     SizedBox(
-                      height: 20,
+                      height: 80,
                     ),
+                    Text("SIKKA",style: GoogleFonts.berkshireSwash(fontSize:40,color: Colors.teal[300]),)
                   ],
                 ),
               ),
-            ),
-    );
+            ],
+          ),
+        ),
+      ),
+    ));
   }
 }

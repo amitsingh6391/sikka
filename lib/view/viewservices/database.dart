@@ -21,53 +21,20 @@ class DatabaseMethods {
     });
   }
 
-  searchByName(String searchField) {
-    return Firestore.instance
-        .collection("users")
-        .where('userName', isEqualTo: searchField)
-        .getDocuments();
+   getEvent1result() async {
+    return await Firestore.instance.collection("event1result").orderBy("time").snapshots();
   }
 
-  //for comments
-
-  getcomments() async {
-    return await Firestore.instance.collection("users").snapshots();
+   getEvent2result() async {
+    return await Firestore.instance.collection("event2result").orderBy("time").snapshots();
   }
 
-  Future<bool> addChatRoom(chatRoom, chatRoomId) {
-    Firestore.instance
-        .collection("chatRoom")
-        .document(chatRoomId)
-        .setData(chatRoom)
-        .catchError((e) {
-      print(e);
-    });
+   getEvent3result() async {
+    return await Firestore.instance.collection("event3result").orderBy("time").snapshots();
   }
 
-  getChats(String chatRoomId) async {
-    return Firestore.instance
-        .collection("chatRoom")
-        .document(chatRoomId)
-        .collection("chats")
-        .orderBy('time')
-        .snapshots();
+   getEvent4result() async {
+    return await Firestore.instance.collection("event4result").orderBy("time").snapshots();
   }
 
-  Future<void> addMessage(String chatRoomId, chatMessageData) {
-    Firestore.instance
-        .collection("chatRoom")
-        .document(chatRoomId)
-        .collection("chats")
-        .add(chatMessageData)
-        .catchError((e) {
-      print(e.toString());
-    });
-  }
-
-  getUserChats(String itIsMyName) async {
-    return await Firestore.instance
-        .collection("chatRoom")
-        .where('users', arrayContains: itIsMyName)
-        .snapshots();
-  }
 }
