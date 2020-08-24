@@ -1,6 +1,7 @@
 # sikka
 
-A new Flutter project.
+Sikka a Beting app in flutter inside this app user can bet his freinds 
+and he can beat him and win real money u must chek this repositories.
 
 ## Getting Started
 
