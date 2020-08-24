@@ -1,11 +1,3 @@
-
-
-
-
-
-
-
-
 import 'package:admob_flutter/admob_flutter.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -20,14 +12,14 @@ import 'package:sikka/pages/home.dart';
 import 'package:sikka/pages/payment.dart';
 import 'package:sikka/services/admob_service.dart';
 
-class Payment2 extends StatefulWidget {
+class Payment3 extends StatefulWidget {
   final String color;
-  Payment2({Key key, @required this.color}) : super(key: key);
+  Payment3({Key key, @required this.color}) : super(key: key);
   @override
-  _Payment2State createState() => _Payment2State();
+  _Payment3State createState() => _Payment3State();
 }
 
-class _Payment2State extends State<Payment2> {
+class _Payment3State extends State<Payment3> {
   TextEditingController coinEditingController = new TextEditingController();
   String userid;
   Stream usercoinstream;
@@ -38,11 +30,12 @@ class _Payment2State extends State<Payment2> {
 
   var redamount, blueamount, yellowamount;
   Stream bluestream;
-  final ams = AdMobService();
-
+final ams = AdMobService();
   void initState() {
 
-   Admob.initialize(ams.getAdMobAppId());
+    
+ Admob.initialize(ams.getAdMobAppId());
+   
     super.initState();
 
 
@@ -82,10 +75,8 @@ class _Payment2State extends State<Payment2> {
     usertrancition();
   }
 
-
-
- DateTime now = DateTime.now();
-usertrancition() async {
+DateTime now = DateTime.now();
+  usertrancition() async {
     var money = num.parse(coinEditingController.text);
     
     await Firestore.instance
@@ -100,13 +91,14 @@ usertrancition() async {
    
   }
 
+
 //for red color.......
 
   redcoloramount() async {
     redfinal = redamount + num.parse(coinEditingController.text);
     print(redfinal);
     await Firestore.instance
-        .collection("Event2")
+        .collection("Event3")
         .document("redammount")
         .setData({
       
@@ -116,10 +108,10 @@ usertrancition() async {
    
   }
 
-  storevent2red() async {
+  storevent3red() async {
     
     await Firestore.instance
-        .collection("Event2")
+        .collection("Event3")
         .document(widget.color)
         .collection("user")
         .document(userid)
@@ -143,7 +135,7 @@ yellowcoloramount() async {
     yellowfinal = yellowamount + num.parse(coinEditingController.text);
     print(redfinal);
     await Firestore.instance
-        .collection("Event2")
+        .collection("Event3")
         .document("yellowammount")
         .setData({
       
@@ -153,10 +145,10 @@ yellowcoloramount() async {
    
   }
 
-  storevent2yellow() async {
+  storevent3yellow() async {
     
     await Firestore.instance
-        .collection("Event2")
+        .collection("Event3")
         .document(widget.color)
         .collection("user")
         .document(userid)
@@ -177,7 +169,7 @@ yellowcoloramount() async {
     bluefinal = blueamount + num.parse(coinEditingController.text);
     print(redfinal);
     await Firestore.instance
-        .collection("Event2")
+        .collection("Event3")
         .document("blueammount")
         .setData({
       
@@ -187,10 +179,10 @@ yellowcoloramount() async {
    
   }
 
-  storevent2blue() async {
+  storevent3blue() async {
     
     await Firestore.instance
-        .collection("Event2")
+        .collection("Event3")
         .document(widget.color)
         .collection("user")
         .document(userid)
@@ -256,7 +248,8 @@ yellowcoloramount() async {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.white,
+         backgroundColor: Colors.lightBlue,
+
         body: SingleChildScrollView(
                   child: Container(
               width: MediaQuery.of(context).size.width,
@@ -284,7 +277,7 @@ yellowcoloramount() async {
                       children: <Widget>[
                         StreamBuilder(
                             stream: Firestore.instance
-                                .collection("Event2")
+                                .collection("Event3")
                                 .document("redammount")
                                 .snapshots(),
                             builder: (context, snapshot) {
@@ -300,7 +293,7 @@ yellowcoloramount() async {
 
                          StreamBuilder(
 
-                            stream:Firestore.instance.collection("Event2").document("blueammount").snapshots(),
+                            stream:Firestore.instance.collection("Event3").document("blueammount").snapshots(),
                             builder:(context,snapshot){
                               if(!snapshot.hasData){
                                 print("loading");
@@ -315,7 +308,7 @@ yellowcoloramount() async {
 
                           StreamBuilder(
 
-                            stream:Firestore.instance.collection("Event2").document("yellowammount").snapshots(),
+                            stream:Firestore.instance.collection("Event3").document("yellowammount").snapshots(),
                             builder:(context,snapshot){
                               if(!snapshot.hasData){
                                 print("loading");
@@ -451,18 +444,18 @@ yellowcoloramount() async {
                                   // storeuser();
 
                                   if (widget.color == "red") {
-                                    storevent2red();
+                                    storevent3red();
                                     redcoloramount();
                                   }
                                   if (widget.color == "blue") {
 
-                                    storevent2blue();
+                                    storevent3blue();
                                     bluecoloramount();
 
                                   }
                                   if (widget.color == "yellow") {
 
-                                    storevent2yellow();
+                                    storevent3yellow();
                                     yellowcoloramount();
 
                                   }
@@ -479,13 +472,13 @@ yellowcoloramount() async {
                             ),
                           ],
                         )),
-                      ],
-                    ),
-                  ),
-             AdmobBanner(
+            AdmobBanner(
             adUnitId:"ca-app-pub-5023637575934146/5580321160",
              adSize: AdmobBannerSize.MEDIUM_RECTANGLE
              ),
+                      ],
+                    ),
+                  ),
                 ],
               )),
         ));

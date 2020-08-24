@@ -1,10 +1,4 @@
-
-
-
-
-
-
-
+import 'dart:math';
 
 import 'package:admob_flutter/admob_flutter.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
@@ -13,21 +7,21 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
 import 'package:sikka/events/event1.dart';
 
 import 'package:sikka/pages/home.dart';
 import 'package:sikka/pages/payment.dart';
+import "package:intl/intl.dart";
 import 'package:sikka/services/admob_service.dart';
 
-class Payment2 extends StatefulWidget {
+class Payment1 extends StatefulWidget {
   final String color;
-  Payment2({Key key, @required this.color}) : super(key: key);
+  Payment1({Key key, @required this.color}) : super(key: key);
   @override
-  _Payment2State createState() => _Payment2State();
+  _Payment1State createState() => _Payment1State();
 }
 
-class _Payment2State extends State<Payment2> {
+class _Payment1State extends State<Payment1> {
   TextEditingController coinEditingController = new TextEditingController();
   String userid;
   Stream usercoinstream;
@@ -42,7 +36,7 @@ class _Payment2State extends State<Payment2> {
 
   void initState() {
 
-   Admob.initialize(ams.getAdMobAppId());
+    Admob.initialize(ams.getAdMobAppId());
     super.initState();
 
 
@@ -77,28 +71,14 @@ class _Payment2State extends State<Payment2> {
 //           MaterialPageRoute(builder: (context) => Event1(x:coinEditingController.text),
 //           ));
       print("store");
-    });
+    }
+    
+    );
+
 
     usertrancition();
   }
 
-
-
- DateTime now = DateTime.now();
-usertrancition() async {
-    var money = num.parse(coinEditingController.text);
-    
-    await Firestore.instance
-        .collection(userid).add({
-      
-
-      "money":money,
-      "color":widget.color,
-      'time': DateTime.now().millisecondsSinceEpoch,
-       "bettime": DateFormat("MM-dd - kk:mm").format(now),
-    });
-   
-  }
 
 //for red color.......
 
@@ -106,7 +86,7 @@ usertrancition() async {
     redfinal = redamount + num.parse(coinEditingController.text);
     print(redfinal);
     await Firestore.instance
-        .collection("Event2")
+        .collection("Event1")
         .document("redammount")
         .setData({
       
@@ -116,10 +96,10 @@ usertrancition() async {
    
   }
 
-  storevent2red() async {
+  storevent1red() async {
     
     await Firestore.instance
-        .collection("Event2")
+        .collection("Event1")
         .document(widget.color)
         .collection("user")
         .document(userid)
@@ -143,7 +123,7 @@ yellowcoloramount() async {
     yellowfinal = yellowamount + num.parse(coinEditingController.text);
     print(redfinal);
     await Firestore.instance
-        .collection("Event2")
+        .collection("Event1")
         .document("yellowammount")
         .setData({
       
@@ -153,10 +133,12 @@ yellowcoloramount() async {
    
   }
 
-  storevent2yellow() async {
+  storevent1yellow() async {
+    var rng = new Random();
+         String documentID = rng.nextInt(1000000).toString();
     
     await Firestore.instance
-        .collection("Event2")
+        .collection("Event1")
         .document(widget.color)
         .collection("user")
         .document(userid)
@@ -177,7 +159,7 @@ yellowcoloramount() async {
     bluefinal = blueamount + num.parse(coinEditingController.text);
     print(redfinal);
     await Firestore.instance
-        .collection("Event2")
+        .collection("Event1")
         .document("blueammount")
         .setData({
       
@@ -186,15 +168,28 @@ yellowcoloramount() async {
     });
    
   }
-
-  storevent2blue() async {
+ DateTime now = DateTime.now();
+  usertrancition() async {
+    var money = num.parse(coinEditingController.text);
     
     await Firestore.instance
-        .collection("Event2")
+        .collection(userid).add({
+      
+
+      "money":money,
+      "color":widget.color,
+      'time': DateTime.now().millisecondsSinceEpoch,
+       "bettime": DateFormat("MM-dd - kk:mm").format(now),
+    });
+   
+  }
+
+  storevent1blue() async {
+    
+    await Firestore.instance
+        .collection("Event1")
         .document(widget.color)
-        .collection("user")
-        .document(userid)
-        .setData({
+        .collection("user").document(userid).setData({
       "color": widget.color,
       "userid": userid,
       "coin": coinEditingController.text,
@@ -284,7 +279,7 @@ yellowcoloramount() async {
                       children: <Widget>[
                         StreamBuilder(
                             stream: Firestore.instance
-                                .collection("Event2")
+                                .collection("Event1")
                                 .document("redammount")
                                 .snapshots(),
                             builder: (context, snapshot) {
@@ -300,7 +295,7 @@ yellowcoloramount() async {
 
                          StreamBuilder(
 
-                            stream:Firestore.instance.collection("Event2").document("blueammount").snapshots(),
+                            stream:Firestore.instance.collection("Event1").document("blueammount").snapshots(),
                             builder:(context,snapshot){
                               if(!snapshot.hasData){
                                 print("loading");
@@ -315,7 +310,7 @@ yellowcoloramount() async {
 
                           StreamBuilder(
 
-                            stream:Firestore.instance.collection("Event2").document("yellowammount").snapshots(),
+                            stream:Firestore.instance.collection("Event1").document("yellowammount").snapshots(),
                             builder:(context,snapshot){
                               if(!snapshot.hasData){
                                 print("loading");
@@ -451,18 +446,18 @@ yellowcoloramount() async {
                                   // storeuser();
 
                                   if (widget.color == "red") {
-                                    storevent2red();
+                                    storevent1red();
                                     redcoloramount();
                                   }
                                   if (widget.color == "blue") {
 
-                                    storevent2blue();
+                                    storevent1blue();
                                     bluecoloramount();
 
                                   }
                                   if (widget.color == "yellow") {
 
-                                    storevent2yellow();
+                                    storevent1yellow();
                                     yellowcoloramount();
 
                                   }
@@ -482,7 +477,7 @@ yellowcoloramount() async {
                       ],
                     ),
                   ),
-             AdmobBanner(
+                    AdmobBanner(
             adUnitId:"ca-app-pub-5023637575934146/5580321160",
              adSize: AdmobBannerSize.MEDIUM_RECTANGLE
              ),
